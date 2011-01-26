@@ -12,8 +12,9 @@
  * Note that Twitter currently limits unauthenticated requests to the user
  * timeline feed to 150 requests per hour per IP address.
  *
- * Author: Amir Malik
- * MIT License
+ * https://github.com/ammmir/twitter-stalker
+ * @author Amir Malik
+ * @license MIT License
  */
 
 var http = require('http');
@@ -80,9 +81,6 @@ function checkfeeds() {
   });
 }
 
-checkfeeds();
-setInterval(checkfeeds, (CONFIG['interval'] || 2) * 60 * 1000);
-
 function sendsms(number, msg) {
   console.log("sending >>>>>>>>>> " + msg + " <<<<<<<<<<<<<<");
 
@@ -100,3 +98,11 @@ function sendsms(number, msg) {
     });
   });         
 }
+
+process.addListener('uncaughtException', function(e) {
+  console.log('Uncaught exception: ' + e);
+  console.log(e.stack);
+});
+
+checkfeeds();
+setInterval(checkfeeds, (CONFIG['interval'] || 2) * 60 * 1000);
